@@ -218,9 +218,9 @@ public class Problems {
 	
 	public void problem14(){
 		int max_number = 1;//start number
-		long max_chain = 1;//chain length
+		int max_chain = 1;//chain length
 		for(int ixnumber=1;ixnumber<1000000;ixnumber++){
-			long chainnum = getChainNum(ixnumber);
+			int chainnum = getChainNum(ixnumber);
 			if(chainnum>max_chain){
 				max_number = ixnumber;
 				max_chain = chainnum;
@@ -229,8 +229,8 @@ public class Problems {
 		System.out.println("demand number is "+max_number);
 		System.out.println("max chain length "+max_chain);
 	}
-	private long getChainNum(long ixnumber){
-		long chainnum = 1;
+	private int getChainNum(long ixnumber){
+		int chainnum = 1;
 		while(ixnumber>1){
 			if(ixnumber%2==0)	ixnumber /= 2;//even
 			else	ixnumber = ixnumber*3 + 1;//odd
