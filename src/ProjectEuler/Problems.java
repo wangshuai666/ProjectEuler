@@ -1,8 +1,6 @@
 package ProjectEuler;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Project Euler Problems
@@ -219,18 +217,20 @@ public class Problems {
 	}
 	
 	public void problem14(){
-		ArrayList<Integer> chainlist = new ArrayList<Integer>();
-		chainlist.add(0);//占位
+		int max_number = 1;//start number
+		long max_chain = 1;//chain length
 		for(int ixnumber=1;ixnumber<1000000;ixnumber++){
-			int chainnum = getChainNum(ixnumber);
-			chainlist.add(chainnum);
+			long chainnum = getChainNum(ixnumber);
+			if(chainnum>max_chain){
+				max_number = ixnumber;
+				max_chain = chainnum;
+			}
 		}
-		int maxindex = getMaxIndex(chainlist);
-		System.out.println("demand number is "+maxindex);
-		System.out.println("max chain length "+chainlist.get(maxindex));
+		System.out.println("demand number is "+max_number);
+		System.out.println("max chain length "+max_chain);
 	}
-	private int getChainNum(int ixnumber){
-		int chainnum = 1;
+	private long getChainNum(long ixnumber){
+		long chainnum = 1;
 		while(ixnumber>1){
 			if(ixnumber%2==0)	ixnumber /= 2;//even
 			else	ixnumber = ixnumber*3 + 1;//odd
@@ -238,24 +238,5 @@ public class Problems {
 		}
 		return chainnum;
 	}
-	private int getMaxIndex(ArrayList<Integer> chainlist){
-		int maxnum = chainlist.get(0);
-		int maxindex = 0;
-		for(int i=1;i<chainlist.size();i++){
-			int item = chainlist.get(i);
-			if(item>maxnum){
-				maxindex = i;
-				maxnum = item;
-			}
-		}
-		return maxindex;
-	}
-/*	private int getChainNum(int ixnumber,int chainnum) {//recurr
-		if(ixnumber==1) return chainnum;
-		if(ixnumber%2==0) ixnumber /= 2;
-		else ixnumber = 3*ixnumber + 1;
-		++chainnum;
-		return getChainNum(ixnumber, chainnum);
-	}*/
 	
 }
