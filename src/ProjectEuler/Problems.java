@@ -13,7 +13,8 @@ public class Problems {
 //		problems.problem1();
 //		problems.problem2();
 //		problems.problem3();
-		problems.newProblem3();
+//		problems.newProblem3();
+		problems.problem7();
 	}
 	
 	public void problem1(){
@@ -76,7 +77,6 @@ public class Problems {
 	}
 	
 	public void newProblem3(){
-		long startime = System.currentTimeMillis();
 		long goalnum = 600851475143L;
 		long maxfactor = 3;
 		long factor = 3;
@@ -89,7 +89,18 @@ public class Problems {
 			}
 		}
 		System.out.println("maxfactor="+maxfactor);
-		System.out.println("used time: "+(System.currentTimeMillis()-startime)/1000+"s");
+	}
+	
+	public void problem7(){
+		ArrayList<Long> primelist = new ArrayList<Long>();
+		primelist.add((long) 2);
+		for(long prime=3,i=1;i<10001;prime+=2){
+			if(isPrime(prime, primelist)){
+				primelist.add(prime);
+				++i;
+			}
+		}
+		System.out.println("10001st prime number is "+primelist.get(primelist.size()-1));
 	}
 	
 }
