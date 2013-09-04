@@ -20,9 +20,12 @@ public class Problems {
 //		problems.problem7();
 //		problems.problem9();
 //		problems.problem10();
-//		problems.fib();
+		problems.fib();
 //		System.out.println("fib_recur="+problems.fib_recur(1, 1));
-		problems.problem14();
+//		problems.problem14();
+//		problems.problem37();
+		problems.newProblem37();
+//		problems.getPrimeList(20000000);
 	}
 	
 	public void problem1(){
@@ -73,9 +76,11 @@ public class Problems {
 		} 
 		return primelist;
 	}
-	private boolean isPrime(long i, ArrayList<Long> primelist) { 
+	private boolean isPrime(long n, ArrayList<Long> primelist) { 
+		if(n<=1) return false;
+		long sqrt_n = (long) Math.sqrt(n);
 		for(long prime:primelist){ 
-			if(i%prime==0){ 
+			if(prime<=sqrt_n&&n%prime==0){ 
 				return false; 
 			} 
 		} 
@@ -203,7 +208,7 @@ public class Problems {
 	
 	public void fib(){
 		long front=1,back=1;
-		while(front<1000000000){
+		while(front<100000000000000000L){
 			long tmp = back;
 			back = front;
 			front += tmp;
@@ -218,25 +223,118 @@ public class Problems {
 	
 	public void problem14(){
 		int max_number = 1;//start number
-		long max_chain = 1;//chain length
+		int max_chain = 1;//chain length
 		for(int ixnumber=1;ixnumber<1000000;ixnumber++){
-			long chainnum = getChainNum(ixnumber);
+			int chainnum = getChainNum(ixnumber);
 			if(chainnum>max_chain){
 				max_number = ixnumber;
 				max_chain = chainnum;
 			}
 		}
-		System.out.println("demand number is "+max_number);
-		System.out.println("max chain length "+max_chain);
+		System.out.println("demand number is "
+					+max_number+"max chain length "+max_chain);
 	}
-	private long getChainNum(long ixnumber){
-		long chainnum = 1;
+	private int getChainNum(long ixnumber){
+		int chainnum = 1;
 		while(ixnumber>1){
 			if(ixnumber%2==0)	ixnumber /= 2;//even
 			else	ixnumber = ixnumber*3 + 1;//odd
 			++chainnum;
 		}
 		return chainnum;
+	}
+	
+	public void problem37(){
+		ArrayList<Long> primelist = new ArrayList<Long>();
+		ArrayList<Long> truncprimelist = new ArrayList<Long>();
+		primelist.add((long) 2);
+		int truncix = 0;
+		for(long prime=3;truncix<=11;prime+=2){
+			if(isPrime(prime, primelist)){
+				if(isTruncPrime(prime,primelist)){
+					System.out.println("p"+prime+" ix"+truncix);
+					truncprimelist.add(prime);
+					++truncix;
+				}
+				primelist.add(prime);
+			}
+		}
+		long sum = 0;
+		for(Long lrprime:truncprimelist){
+			sum += lrprime;
+		}
+		System.out.println("sum of lrprimes is "+sum);
+	}
+	private boolean isTruncPrime(long prime,ArrayList<Long> primelist){
+		if(prime<23) return false;
+		final long primeLong = prime;
+		long rsPrime = primeLong;
+		for(int i=Long.toString(primeLong).length()-1;i>0;i--){
+			long lsPrime = primeLong%(long)Math.pow(10, i);
+			rsPrime /= 10;
+			if(!primelist.contains(lsPrime)||!primelist.contains(rsPrime))
+				return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * 筛法求n以下(不包括n)的素数个数
+	 * @param n
+	 * @return byte[] primecontainer
+	 */
+	public byte[] getPrimeContainer(int n){//n为指定的自然数最大值，不包括n
+		byte[] container = new byte[n];
+		int count = 0;int sqrt_n = (int) Math.sqrt(n);
+		container[0]=1;container[1]=1;
+		for(int i=2;i<container.length;i++){
+			if(0==container[i]){//0表示素数,每个素数做一次筛选
+				++count;//计算素数个数
+				if(i>sqrt_n) continue;//i大于sqrt时，不再筛选
+				execSieve(i, container);
+			}
+		}
+//		System.out.println("count="+count);
+		return container;
+	}
+	private void execSieve(int num,byte[] container){
+		int len = container.length;
+		for(int ix=2;num*ix<len&&ix<len;ix++){
+			container[num*ix] = 1;//非素数设为1
+		}
+	}
+	
+	public void newProblem37(){
+		long startime = System.currentTimeMillis();
+		int n = 2000000;int trunCount = 0;long sum = 0;
+		while(trunCount<11){
+			byte[] primecontainer = getPrimeContainer(n);
+			trunCount = 0;
+			for(int i=2;i<primecontainer.length;i++){
+				if(0==primecontainer[i]){
+					if(isTruncPrime(i, primecontainer)){
+						++trunCount;
+						sum += i;
+						System.out.println("t"+trunCount+" "+i);
+					}
+				}
+			}
+			n = n*n;
+		}
+		System.out.println("sum of lrprimes is "+sum);
+		System.out.println("time "+(System.currentTimeMillis()-startime));
+	}
+	private boolean isTruncPrime(int prime, byte[] primecontainer){
+		if(prime<23) return false;
+		final int primeLong = prime;
+		int rsPrime = primeLong;
+		for(int i=Long.toString(primeLong).length()-1;i>0;i--){
+			int lsPrime = primeLong%(int)Math.pow(10, i);
+			rsPrime /= 10;
+			if(primecontainer[lsPrime]!=0||primecontainer[rsPrime]!=0)
+				return false;
+		}
+		return true;
 	}
 	
 }
