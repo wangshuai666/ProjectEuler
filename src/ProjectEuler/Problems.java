@@ -18,14 +18,16 @@ public class Problems {
 //		problems.problem5();
 //		problems.problem6();
 //		problems.problem7();
+//		problems.problem8();
 //		problems.problem9();
 //		problems.problem10();
-		problems.fib();
+//		problems.newProblem10();
+//		problems.fib();
 //		System.out.println("fib_recur="+problems.fib_recur(1, 1));
 //		problems.problem14();
 //		problems.problem37();
 		problems.newProblem37();
-//		problems.getPrimeList(20000000);
+//		problems.getPrimeContainer(20000000);
 	}
 	
 	public void problem1(){
@@ -46,7 +48,7 @@ public class Problems {
 			int tmp = back;
 			back = front;
 			front = front + tmp;
-			System.out.println("front: "+front);
+//			System.out.println("front: "+front);
 			if(front%2==0){
 				sum += front;
 			}
@@ -179,6 +181,40 @@ public class Problems {
 		System.out.println("10001st prime number is "+primelist.get(primelist.size()-1));
 	}
 	
+	public void problem8(){
+		String digits = "73167176531330624919225119674426574742355349194934"
+				+"96983520312774506326239578318016984801869478851843"
+				+"85861560789112949495459501737958331952853208805511"
+				+"12540698747158523863050715693290963295227443043557"
+				+"66896648950445244523161731856403098711121722383113"
+				+"62229893423380308135336276614282806444486645238749"
+				+"30358907296290491560440772390713810515859307960866"
+				+"70172427121883998797908792274921901699720888093776"
+				+"65727333001053367881220235421809751254540594752243"
+				+"52584907711670556013604839586446706324415722155397"
+				+"53697817977846174064955149290862569321978468622482"
+				+"83972241375657056057490261407972968652414535100474"
+				+"82166370484403199890008895243450658541227588666881"
+				+"16427171479924442928230863465674813919123162824586"
+				+"17866458359124566529476545682848912883142607690042"
+				+"24219022671055626321111109370544217506941658960408"
+				+"07198403850962455444362981230987879927244284909188"
+				+"84580156166097919133875499200524063689912560717606"
+				+"05886116467109405077541002256983155200055935729725"
+				+"71636269561882670428252483600823257530420752963450";
+		int product = 0;int maxproduct = 0;
+		for(int i=0;i<digits.length()-4;i++){
+			int d1 = Integer.parseInt(String.valueOf(digits.charAt(i)));
+			int d2 = Integer.parseInt(String.valueOf(digits.charAt(i+1)));
+			int d3 = Integer.parseInt(String.valueOf(digits.charAt(i+2)));
+			int d4 = Integer.parseInt(String.valueOf(digits.charAt(i+3)));
+			int d5 = Integer.parseInt(String.valueOf(digits.charAt(i+4)));
+			product = d1*d2*d3*d4*d5;
+			if(product>maxproduct) maxproduct = product;
+		}
+		System.out.println("maxproduct="+maxproduct);
+	}
+	
 	public void problem9(){
 		for(int a=1;a<999;a++){
 			for(int b=999;b>0;b--){
@@ -202,6 +238,15 @@ public class Problems {
 				primesum += prime;
 				primelist.add(prime);
 			}
+		}
+		System.out.println("sum of primes below 2 million is "+primesum);
+	}
+	
+	public void newProblem10(){
+		byte[] primecontainer = getPrimeContainer(2000000);
+		long primesum = 0;
+		for(int i=2;i<primecontainer.length;i++){
+			if(0==primecontainer[i]) primesum += i; 
 		}
 		System.out.println("sum of primes below 2 million is "+primesum);
 	}
@@ -232,7 +277,7 @@ public class Problems {
 			}
 		}
 		System.out.println("demand number is "
-					+max_number+"max chain length "+max_chain);
+					+max_number+" max chain length "+max_chain);
 	}
 	private int getChainNum(long ixnumber){
 		int chainnum = 1;
@@ -285,11 +330,12 @@ public class Problems {
 	 */
 	public byte[] getPrimeContainer(int n){//n为指定的自然数最大值，不包括n
 		byte[] container = new byte[n];
-		int count = 0;int sqrt_n = (int) Math.sqrt(n);
+//		int count = 0;//计算的素数个数
+		int sqrt_n = (int) Math.sqrt(n);
 		container[0]=1;container[1]=1;
 		for(int i=2;i<container.length;i++){
 			if(0==container[i]){//0表示素数,每个素数做一次筛选
-				++count;//计算素数个数
+//				++count;//计算素数个数
 				if(i>sqrt_n) continue;//i大于sqrt时，不再筛选
 				execSieve(i, container);
 			}
@@ -322,7 +368,7 @@ public class Problems {
 			n = n*n;
 		}
 		System.out.println("sum of lrprimes is "+sum);
-		System.out.println("time "+(System.currentTimeMillis()-startime));
+		System.out.println("time "+(System.currentTimeMillis()-startime)+"ms");
 	}
 	private boolean isTruncPrime(int prime, byte[] primecontainer){
 		if(prime<23) return false;
